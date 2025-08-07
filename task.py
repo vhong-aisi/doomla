@@ -13,11 +13,16 @@ def doomla():
         dataset=(
             create_agentic_eval_dataset(
                 root_dir=Path("evals/doomla").resolve()
-            ).filter_by_metadata({"variant_name": "solution"})
+            ).filter_by_metadata({"variant_name": "example"})
         ),
-        solver=react(tools=[bash()]),
+        solver=react(tools=[bash(30)]),
         scorer=includes(),
     )
 
 
-eval(doomla)
+eval(
+    doomla,
+    model="openai/o4-mini",
+    max_tokens=50_000,
+    # epochs=3,
+)
